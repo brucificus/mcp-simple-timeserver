@@ -6,6 +6,9 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
+# Default NTP server
+DEFAULT_NTP_SERVER = 'pool.ntp.org'
+
 app = Server("mcp-simple-timeserver")
 
 @app.list_tools()
@@ -25,7 +28,12 @@ async def list_tools() -> list[Tool]:
             description="Returns accurate UTC time from an NTP server.",
             inputSchema={
                 "type": "object",
-                "properties": {},
+                "properties": {
+                    "server": {
+                        "type": "string",
+                        "description": "NTP server address (default: pool.ntp.org)"
+                    }
+                },
                 "additionalProperties": False
             }
         )
@@ -44,12 +52,14 @@ async def call_tool(name: str, arguments: Any) -> list[TextContent]:
     elif name == "get_utc":
         try:
             ntp_client = ntplib.NTPClient()
-            response = ntp_client.request('pool.ntp.org', version=3)
+            server = arguments.get("server", DEFAULT_NTP_SERVER)
+            response = ntp_client.request(server, version=3)
             utc_time = datetime.utcfromtimestamp(response.tx_time)
             formatted_time = utc_time.strftime("%Y-%m-%d %H:%M:%S")
+            used_server = f" (using {server})" if server != DEFAULT_NTP_SERVER else ""
             return [TextContent(
                 type="text",
-                text=f"Current UTC Time (from NTP): {formatted_time}"
+                text=f"Current UTC Time{used_server}: {formatted_time}"
             )]
         except ntplib.NTPException as e:
             return [TextContent(
