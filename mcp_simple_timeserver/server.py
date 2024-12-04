@@ -1,6 +1,7 @@
 import asyncio
 from typing import Any
 from datetime import datetime
+import ntplib
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
@@ -15,21 +16,46 @@ async def list_tools() -> list[Tool]:
             description="Returns the current local time and timezone information.",
             inputSchema={
                 "type": "object",
-                # Even though we don't have any required inputs, we should define the schema
                 "properties": {},
-                "additionalProperties": False  # This ensures no unexpected inputs
+                "additionalProperties": False
+            }
+        ),
+        Tool(
+            name="get_utc",
+            description="Returns accurate UTC time from an NTP server.",
+            inputSchema={
+                "type": "object",
+                "properties": {},
+                "additionalProperties": False
             }
         )
     ]
 
 @app.call_tool()
-async def call_tool(name: str, arguments: Any) -> list[TextContent]:  # Note: should return a list of TextContent
+async def call_tool(name: str, arguments: Any) -> list[TextContent]:
     if name == "get_time":
         local_time = datetime.now()
         timezone = str(datetime.now().astimezone().tzinfo)
         formatted_time = local_time.strftime("%Y-%m-%d %H:%M:%S")
-        response = f"Current Time: {formatted_time}\nTimezone: {timezone}"
-        return [TextContent(type="text", text=response)]  # Wrap in a list and properly construct TextContent
+        return [TextContent(
+            type="text",
+            text=f"Current Time: {formatted_time}\nTimezone: {timezone}"
+        )]
+    elif name == "get_utc":
+        try:
+            ntp_client = ntplib.NTPClient()
+            response = ntp_client.request('pool.ntp.org', version=3)
+            utc_time = datetime.utcfromtimestamp(response.tx_time)
+            formatted_time = utc_time.strftime("%Y-%m-%d %H:%M:%S")
+            return [TextContent(
+                type="text",
+                text=f"Current UTC Time (from NTP): {formatted_time}"
+            )]
+        except ntplib.NTPException as e:
+            return [TextContent(
+                type="text",
+                text=f"Error getting NTP time: {str(e)}"
+            )]
     raise ValueError(f"Unknown tool: {name}")
 
 async def main():
