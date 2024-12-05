@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="mcp-simple-timeserver",
-    version="1.0.3",
-    description="A simple MCP server that returns the local time and timezone.",
+    version="1.0.5",
+    description="A simple MCP server that returns the local time and timezone. Alternatively the server can provide current UTC time from an NTP server.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",  
     author="Andy Brandt",

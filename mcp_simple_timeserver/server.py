@@ -16,7 +16,7 @@ async def list_tools() -> list[Tool]:
     return [
         Tool(
             name="get_time",
-            description="Returns the current local time and timezone information.",
+            description="Returns the current local time and timezone information from the current client. An AI can thus know what time it is at your human interlocutor location.",
             inputSchema={
                 "type": "object",
                 "properties": {},

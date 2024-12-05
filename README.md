@@ -1,8 +1,10 @@
 # MCP Simple Timeserver
 
-One of the strange design decisions Anthropic made was depriving Claude of timestamps for messages sent by the user or current time in general. Poor Claude can't tell what time it is! `mcp-simple-timeserver` is a simple MCP server that fixes that.  
+*One of the strange design decisions Anthropic made was depriving Claude of timestamps for messages sent by the user or current time in general. Poor Claude can't tell what time it is! `mcp-simple-timeserver` is a simple MCP server that fixes that.*
 
-It provides the current local time and timezone information from the user's machine. This way Claude can know what time it is at the user's location. He can also calculate how much time passed since his last interaction with the user should he want to do so. 
+This server provides two tools:
+ - `get_time` provides the current local time and timezone information from the user's machine. This way Claude can know what time it is at the user's location. He can also calculate how much time passed since his last interaction with the user should he want to do so. 
+ - `get_utc` provides current UTC time obtained from an [NTP time server](https://en.wikipedia.org/wiki/Network_Time_Protocol). 
 
 ## Installation
 
