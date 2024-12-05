@@ -21,7 +21,7 @@ Under Mac OS this will look like this:
 
 ```json
 "mcpServers": {
-  "fetch": {
+  "simple-timeserver": {
     "command": "python",
     "args": ["-m", "mcp_simple_timeserver"]
   }
@@ -34,7 +34,7 @@ Typical configuration would look like this:
 
 ```json
 "mcpServers": {
-  "fetch": {
+  "simple-timeserver": {
     "command": "C:\\Users\\YOUR_USERNAME\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
     "args": ["-m", "mcp_simple_timeserver"]
   }
