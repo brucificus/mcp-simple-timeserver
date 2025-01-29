@@ -1,4 +1,5 @@
 # MCP Simple Timeserver
+[![smithery badge](https://smithery.ai/badge/mcp-simple-timeserver)](https://smithery.ai/server/mcp-simple-timeserver)
 
 *One of the strange design decisions Anthropic made was depriving Claude of timestamps for messages sent by the user or current time in general. Poor Claude can't tell what time it is! `mcp-simple-timeserver` is a simple MCP server that fixes that.*
 
@@ -8,6 +9,15 @@ This server provides two tools:
 
 ## Installation
 
+### Installing via Smithery
+
+To install Simple Timeserver for Claude Desktop automatically via [Smithery](https://smithery.ai/server/mcp-simple-timeserver):
+
+```bash
+npx -y @smithery/cli install mcp-simple-timeserver --client claude
+```
+
+### Manual Installation
 First install the module using:
 
 ```bash
